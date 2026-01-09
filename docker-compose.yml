@@ -1,0 +1,63 @@
+name: paper-api
+version: "3.9"
+services:
+  selfhosted-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-paperapi_selfhosted}
+      POSTGRES_USER: ${POSTGRES_USER:-paperapi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-paperapi}
+    ports:
+      - "5432:5432"
+    volumes:
+      - selfhosted-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - paper-api-network
+
+  pdfapi:
+    build:
+      context: ./pdfapi
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ConnectionStrings__Default: Host=selfhosted-db;Port=5432;Database=${POSTGRES_DB:-paperapi_selfhosted};Username=${POSTGRES_USER:-paperapi};Password=${POSTGRES_PASSWORD:-paperapi}
+      App__ApiKeys__0: ${PAPERAPI_DEFAULT_KEY:-selfhosted-change-me}
+      App__AllowedOrigins__0: ${DASHBOARD_ORIGIN:-http://localhost:3001}
+      App__DataProtection__KeyPath: /app/dp-keys
+    ports:
+      - "8087:8086"
+    volumes:
+      - ./pdfapi/dp-keys:/app/dp-keys
+    depends_on:
+      selfhosted-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - paper-api-network
+
+  dashboard:
+    build:
+      context: ./dashboard
+      args:
+        NEXT_PUBLIC_PDF_API_BASE_URL: ${PDF_API_PUBLIC_URL:-http://localhost:8087}
+    environment:
+      NEXT_PUBLIC_PDF_API_BASE_URL: ${PDF_API_PUBLIC_URL:-http://localhost:8087}
+    ports:
+      - "3001:3000"
+    depends_on:
+      - pdfapi
+    restart: unless-stopped
+    networks:
+      - paper-api-network
+
+volumes:
+  selfhosted-db-data:
+
+networks:
+  paper-api-network:
+    name: paper-api-network
