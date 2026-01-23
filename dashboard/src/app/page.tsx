@@ -468,7 +468,7 @@ export default function HomePage() {
           >
             <div>
               <h2 className="text-xl font-semibold text-white">Admin credentials</h2>
-              <p className="text-sm text-slate-400">These details are stored in the local database.</p>
+                <p className="text-sm text-slate-400">These details are stored in your self-hosted database.</p>
             </div>
             <Field
               label="Username"
@@ -515,7 +515,7 @@ export default function HomePage() {
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
             <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">Welcome back</p>
-            <h1 className="text-4xl font-semibold text-white">Log in to manage your local PaperAPI stack.</h1>
+             <h1 className="text-4xl font-semibold text-white">Log in to manage your self-hosted PaperAPI instance.</h1>
             <p className="text-slate-300">
               This console never leaves your network. It keeps API keys, usage snapshots, and
               rendering activity in sync with your self-hosted instance.
@@ -612,7 +612,7 @@ export default function HomePage() {
         <div>
           <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">Self-hosted dashboard</p>
           <h1 className="text-3xl font-semibold text-white">PaperAPI Control Room</h1>
-          <p className="text-sm text-slate-400">Local instance overview. No plans, no billing, just your stack.</p>
+          <p className="text-sm text-slate-400">Your self-hosted instance. No plans, no billing, just your infrastructure.</p>
         </div>
         <button
           type="button"
@@ -843,7 +843,7 @@ export default function HomePage() {
               <h2 className="text-xl font-semibold text-white">Test a key</h2>
               <p className="text-sm text-slate-400">Send a live request and download the generated PDF.</p>
               <p className="text-xs text-slate-500">
-                Plaintext keys are stored locally for copy; the server stores only hashes.
+                 Plaintext keys are stored in your browser for copy; the server stores only hashes.
               </p>
             </div>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
@@ -1067,7 +1067,7 @@ export default function HomePage() {
             <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
               <p className="text-sm font-semibold text-white">Audit trail</p>
               <p className="mt-2 text-sm text-slate-400">
-                All requests are logged locally. Export logs regularly if you need long-term
+                  All requests are logged on your instance. Export logs regularly if you need long-term
                 retention.
               </p>
             </div>
@@ -1097,8 +1097,8 @@ function Header() {
         >
           SDKs
         </a>
-        <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-200">
-          Local instance
+            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-200">
+              Self-Hosted
         </span>
       </div>
     </header>

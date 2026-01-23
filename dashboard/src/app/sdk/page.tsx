@@ -81,9 +81,9 @@ export default function SdkPage() {
               {pdfApiBaseUrl}
             </span>
           </div>
-          <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-100">
-            Local only
-          </span>
+            <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-100">
+              Self-Hosted Only
+            </span>
         </div>
       </div>
 
