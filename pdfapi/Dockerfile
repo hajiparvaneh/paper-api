@@ -14,6 +14,9 @@ ENV NUGET_HTTP_RETRY_COUNT=10 \
 RUN dotnet restore ./src/PdfApi/PaperAPI.PdfApi.csproj --disable-parallel
 
 COPY . .
+# Ensure all package references (including analyzer packages) are restored after full sources are available
+RUN dotnet restore ./src/PdfApi/PaperAPI.PdfApi.csproj --disable-parallel
+
 RUN dotnet publish ./src/PdfApi/PaperAPI.PdfApi.csproj -c Release -o /app/publish --no-restore
 
 # Runtime stage
