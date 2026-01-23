@@ -1,0 +1,86 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# Visual Studio Code
+*.code-workspace
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Local History for Visual Studio
+.localhistory/
+
+# BeatPulse healthcheck temp database
+healthchecksdb
+
+# Backup & temporary files
+*.bak
+*~
+*.swp
+*.swo
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Runtime
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Data Protection Keys (should not be committed)
+# dp-keys/ - Uncomment if you want to exclude this directory
+# Consider excluding if keys are environment-specific
+
+# Logs
+*.log
+logs/
+
+# Temporary
+tmp/
+.temp/
+
+# Coverage
+coverage/
+*.coverage
