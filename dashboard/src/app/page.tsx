@@ -414,10 +414,10 @@ export default function HomePage() {
 
   if (!isConfigured) {
     return (
-      <main className="mx-auto max-w-6xl px-6 py-16">
+      <main className="mx-auto max-w-6xl px-6 py-20">
         <Header />
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-6">
+        <div className="mt-12 grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-7">
             <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">
               First run setup
             </p>
@@ -429,6 +429,17 @@ export default function HomePage() {
               is created, the setup page is disabled and you will be logged in
               automatically.
             </p>
+            <div className="flex flex-wrap gap-3 text-xs text-slate-200">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Local only
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Single admin
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Reset via volume
+              </span>
+            </div>
             <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-6">
               <p className="text-sm text-slate-300">
                 To reset the admin account, remove the database volume and
@@ -492,9 +503,10 @@ export default function HomePage() {
                 setAuthBusy(false);
               }
             }}
-            className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/70 p-8 shadow-lg"
+            className="relative overflow-hidden space-y-10 rounded-3xl border border-white/10 bg-slate-950/80 p-10 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur"
           >
-            <div>
+            <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/10 via-transparent to-slate-900/60" />
+            <div className="relative space-y-2">
               <h2 className="text-xl font-semibold text-white">
                 Admin credentials
               </h2>
@@ -502,44 +514,48 @@ export default function HomePage() {
                 These details are stored in your self-hosted database.
               </p>
             </div>
-            <Field
-              label="Username"
-              value={setupForm.username}
-              onChange={(value) =>
-                setSetupForm((prev) => ({ ...prev, username: value }))
-              }
-              placeholder="admin"
-            />
-            <Field
-              label="Password"
-              type="password"
-              value={setupForm.password}
-              onChange={(value) =>
-                setSetupForm((prev) => ({ ...prev, password: value }))
-              }
-              placeholder="Create a strong password"
-            />
-            <Field
-              label="Confirm password"
-              type="password"
-              value={setupForm.confirm}
-              onChange={(value) =>
-                setSetupForm((prev) => ({ ...prev, confirm: value }))
-              }
-              placeholder="Repeat password"
-            />
+            <div className="relative grid gap-6">
+              <Field
+                label="Username"
+                value={setupForm.username}
+                onChange={(value) =>
+                  setSetupForm((prev) => ({ ...prev, username: value }))
+                }
+                placeholder="admin"
+              />
+              <Field
+                label="Password"
+                type="password"
+                value={setupForm.password}
+                onChange={(value) =>
+                  setSetupForm((prev) => ({ ...prev, password: value }))
+                }
+                placeholder="Create a strong password"
+              />
+              <Field
+                label="Confirm password"
+                type="password"
+                value={setupForm.confirm}
+                onChange={(value) =>
+                  setSetupForm((prev) => ({ ...prev, confirm: value }))
+                }
+                placeholder="Repeat password"
+              />
+            </div>
             {setupError ? (
               <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
                 {setupError}
               </div>
             ) : null}
-            <button
-              type="submit"
-              disabled={authBusy}
-              className="w-full rounded-2xl bg-cyan-300/90 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {authBusy ? "Saving..." : "Save admin credentials"}
-            </button>
+            <div className="mt-5 border-t border-white/10 pt-4">
+              <button
+                type="submit"
+                disabled={authBusy}
+                className="w-full rounded-2xl bg-cyan-300/90 px-5 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {authBusy ? "Saving..." : "Save admin credentials"}
+              </button>
+            </div>
           </form>
         </div>
       </main>
@@ -548,10 +564,10 @@ export default function HomePage() {
 
   if (!sessionActive) {
     return (
-      <main className="mx-auto max-w-6xl px-6 py-16">
+      <main className="mx-auto max-w-6xl px-6 py-20">
         <Header />
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-6">
+        <div className="mt-12 grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-7">
             <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">
               Welcome back
             </p>
@@ -563,6 +579,17 @@ export default function HomePage() {
               snapshots, and rendering activity in sync with your self-hosted
               instance.
             </p>
+            <div className="flex flex-wrap gap-3 text-xs text-slate-200">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Secure session
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Browser local vault
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.2em]">
+                Admin only
+              </span>
+            </div>
             <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-6">
               <p className="text-sm text-slate-300">
                 Admin account: {adminUsername ?? "configured"}
@@ -617,43 +644,48 @@ export default function HomePage() {
                 setAuthBusy(false);
               }
             }}
-            className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/70 p-8 shadow-lg"
+            className="relative overflow-hidden space-y-10 rounded-3xl border border-white/10 bg-slate-950/80 p-10 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur"
           >
-            <div>
+            <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/10 via-transparent to-slate-900/60" />
+            <div className="relative space-y-2">
               <h2 className="text-xl font-semibold text-white">Admin login</h2>
               <p className="text-sm text-slate-400">
                 No additional users are supported yet.
               </p>
             </div>
-            <Field
-              label="Username"
-              value={loginForm.username}
-              onChange={(value) =>
-                setLoginForm((prev) => ({ ...prev, username: value }))
-              }
-              placeholder="admin"
-            />
-            <Field
-              label="Password"
-              type="password"
-              value={loginForm.password}
-              onChange={(value) =>
-                setLoginForm((prev) => ({ ...prev, password: value }))
-              }
-              placeholder="Your password"
-            />
+            <div className="relative grid gap-6">
+              <Field
+                label="Username"
+                value={loginForm.username}
+                onChange={(value) =>
+                  setLoginForm((prev) => ({ ...prev, username: value }))
+                }
+                placeholder="admin"
+              />
+              <Field
+                label="Password"
+                type="password"
+                value={loginForm.password}
+                onChange={(value) =>
+                  setLoginForm((prev) => ({ ...prev, password: value }))
+                }
+                placeholder="Your password"
+              />
+            </div>
             {loginError ? (
               <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
                 {loginError}
               </div>
             ) : null}
-            <button
-              type="submit"
-              disabled={authBusy}
-              className="w-full rounded-2xl bg-cyan-300/90 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {authBusy ? "Signing in..." : "Log in"}
-            </button>
+            <div className="mt-5 border-t border-white/10 pt-4">
+              <button
+                type="submit"
+                disabled={authBusy}
+                className="w-full rounded-2xl bg-cyan-300/90 px-5 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {authBusy ? "Signing in..." : "Log in"}
+              </button>
+            </div>
           </form>
         </div>
       </main>
@@ -1267,14 +1299,16 @@ function Field({
   type?: string;
 }) {
   return (
-    <label className="space-y-2 text-sm text-slate-300">
-      <span>{label}</span>
+    <label className="space-y-2.5 text-sm text-slate-200">
+      <span className="text-xs uppercase tracking-[0.2em] text-slate-400">
+        {label}
+      </span>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-200/40"
+        className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-5 py-3.5 text-sm text-white placeholder:text-slate-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus:border-cyan-200/50 focus:outline-none focus:ring-2 focus:ring-cyan-200/40"
       />
     </label>
   );

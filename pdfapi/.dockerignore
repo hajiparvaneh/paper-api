@@ -1,0 +1,22 @@
+# Keep build context lean and avoid leaking host artifacts
+**/bin
+**/obj
+**/.vs
+**/.idea
+**/.vscode
+**/*.user
+**/*.suo
+
+# Git
+.git
+.gitignore
+
+# Node artifacts (not used here but avoid accidental copies)
+**/node_modules
+**/dist
+**/build
+
+# NuGet and cache
+**/packages
+**/TestResults
+**/coverage
