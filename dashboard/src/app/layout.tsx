@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | PaperAPI",
   },
   description:
-      "Self-hosted control plane for PaperAPI: manage keys, watch usage, and monitor PDF jobs on your infrastructure.",
+    "Self-hosted control plane for PaperAPI: manage keys, watch usage, and monitor PDF jobs on your infrastructure.",
   icons: {
     icon: "/favicon.svg",
   },
