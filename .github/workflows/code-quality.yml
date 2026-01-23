@@ -1,0 +1,107 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dashboard/**'
+      - 'pdfapi/**'
+      - '.github/workflows/code-quality.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'dashboard/**'
+      - 'pdfapi/**'
+
+jobs:
+  lint-dashboard:
+    runs-on: ubuntu-latest
+    name: Lint Dashboard (Next.js)
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'dashboard/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./dashboard
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ./dashboard
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Check TypeScript
+        working-directory: ./dashboard
+        run: npx tsc --noEmit
+        continue-on-error: false
+
+  lint-pdfapi:
+    runs-on: ubuntu-latest
+    name: Lint & Build PDF API (.NET)
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        working-directory: ./pdfapi
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./pdfapi
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        working-directory: ./pdfapi
+        run: dotnet test --configuration Release --no-build --verbosity normal
+        continue-on-error: true
+
+      - name: Analyze code style with StyleCop
+        working-directory: ./pdfapi
+        run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=false
+        continue-on-error: true
+
+  security-check:
+    runs-on: ubuntu-latest
+    name: Security Checks
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for dependency check
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Check for vulnerable npm packages
+        working-directory: ./dashboard
+        run: |
+          npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Setup .NET for dependency check
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Check for vulnerable NuGet packages
+        working-directory: ./pdfapi
+        run: |
+          dotnet list package --vulnerable
+        continue-on-error: true

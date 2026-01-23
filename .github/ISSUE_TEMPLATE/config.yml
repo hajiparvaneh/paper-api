@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/hajiparvaneh/paper-api
+    about: Please check the documentation first
+  - name: Security Issue
+    url: https://github.com/hajiparvaneh/paper-api/security/policy
+    about: Report security vulnerabilities responsibly
