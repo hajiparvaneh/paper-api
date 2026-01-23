@@ -15,7 +15,8 @@ type Sdk = {
   iconAccent: string;
 };
 
-const pdfApiBaseUrl = process.env.NEXT_PUBLIC_PDF_API_BASE_URL || "http://localhost:8087";
+const pdfApiBaseUrl =
+  process.env.NEXT_PUBLIC_PDF_API_BASE_URL || "http://localhost:8087";
 
 const sdks: Sdk[] = [
   {
@@ -36,7 +37,8 @@ const sdks: Sdk[] = [
     name: "npm SDK",
     ecosystem: "Node.js / TypeScript",
     status: "available",
-    description: "Fetch-first TypeScript client with runtime validation, retries, and typed responses.",
+    description:
+      "Fetch-first TypeScript client with runtime validation, retries, and typed responses.",
     command: "npm install @paperapi/sdk",
     link: "https://www.npmjs.com/package/@paperapi/sdk",
     linkText: "npm",
@@ -48,7 +50,8 @@ const sdks: Sdk[] = [
     name: "pip SDK",
     ecosystem: "Python",
     status: "soon",
-    description: "Async-friendly client for FastAPI, Django, and serverless workloads.",
+    description:
+      "Async-friendly client for FastAPI, Django, and serverless workloads.",
     iconLabel: "Py",
     iconAccent: "border-amber-400/30 bg-amber-400/10 text-amber-200",
   },
@@ -57,7 +60,8 @@ const sdks: Sdk[] = [
     name: "Composer SDK",
     ecosystem: "PHP / Laravel",
     status: "soon",
-    description: "PSR-compliant wrapper with request signing and queue helpers.",
+    description:
+      "PSR-compliant wrapper with request signing and queue helpers.",
     iconLabel: "Ph",
     iconAccent: "border-purple-400/30 bg-purple-500/10 text-purple-200",
   },
@@ -67,12 +71,16 @@ export default function SdkPage() {
   return (
     <section className="mx-auto max-w-6xl space-y-12 px-6 py-16 text-white">
       <div className="space-y-6">
-        <p className="text-sm uppercase tracking-[0.4em] text-emerald-300/80">SDKs</p>
-        <h1 className="text-4xl font-semibold">Installed in seconds. Clean in production.</h1>
+        <p className="text-sm uppercase tracking-[0.4em] text-emerald-300/80">
+          SDKs
+        </p>
+        <h1 className="text-4xl font-semibold">
+          Installed in seconds. Clean in production.
+        </h1>
         <p className="max-w-3xl text-lg text-white/70">
-          Skip wiring raw HTTP calls and jump straight to typed methods, resilient retries, and
-          observability. Each PaperAPI SDK keeps your PDF code small, predictable, and security
-          reviewed.
+          Skip wiring raw HTTP calls and jump straight to typed methods,
+          resilient retries, and observability. Each PaperAPI SDK keeps your PDF
+          code small, predictable, and security reviewed.
         </p>
         <div className="flex flex-wrap items-center gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-4 text-sm text-white/70">
           <div className="flex flex-wrap items-center gap-3">
@@ -82,7 +90,7 @@ export default function SdkPage() {
             </span>
           </div>
           <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-100">
-            Local only
+            Self-Hosted Only
           </span>
         </div>
       </div>
@@ -107,7 +115,9 @@ export default function SdkPage() {
                     {sdk.iconLabel}
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.3em] text-white/50">{sdk.ecosystem}</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                      {sdk.ecosystem}
+                    </p>
                     <h2 className="text-xl font-semibold">{sdk.name}</h2>
                   </div>
                   <span
@@ -121,7 +131,9 @@ export default function SdkPage() {
 
               {isAvailable ? (
                 <div className="mt-6 space-y-3">
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/50">Install</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                    Install
+                  </p>
                   {sdk.command ? (
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white/90">
                       <span className="font-mono">{sdk.command}</span>
@@ -144,8 +156,16 @@ export default function SdkPage() {
                         strokeWidth="1.5"
                         className="h-4 w-4"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 7 7 17" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h9v9" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17 7 7 17"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8 7h9v9"
+                        />
                       </svg>
                     </Link>
                   ) : null}
@@ -153,7 +173,10 @@ export default function SdkPage() {
               ) : (
                 <div className="mt-6 rounded-2xl border border-dashed border-white/15 bg-white/5 px-4 py-3 text-sm text-white/60">
                   Packaging is finalizing. Drop us a line at{" "}
-                  <a className="text-white/80 hover:text-white" href="mailto:founders@paperapi.de">
+                  <a
+                    className="text-white/80 hover:text-white"
+                    href="mailto:founders@paperapi.de"
+                  >
                     founders@paperapi.de
                   </a>{" "}
                   if you want early access.
@@ -165,10 +188,13 @@ export default function SdkPage() {
       </div>
 
       <div className="rounded-3xl border border-white/10 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent p-6 text-white">
-        <h2 className="text-2xl font-semibold">Need another runtime supported?</h2>
+        <h2 className="text-2xl font-semibold">
+          Need another runtime supported?
+        </h2>
         <p className="mt-3 text-white/70">
-          Tell us about your stack and we will prioritize the next SDK drop. We are actively working
-          on Python, PHP, and Go ports with the same clean abstractions.
+          Tell us about your stack and we will prioritize the next SDK drop. We
+          are actively working on Python, PHP, and Go ports with the same clean
+          abstractions.
         </p>
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
           <a
