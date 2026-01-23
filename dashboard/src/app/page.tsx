@@ -1300,7 +1300,9 @@ function Field({
 }) {
   return (
     <label className="space-y-2.5 text-sm text-slate-200">
-      <span className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</span>
+      <span className="text-xs uppercase tracking-[0.2em] text-slate-400">
+        {label}
+      </span>
       <input
         type={type}
         value={value}
