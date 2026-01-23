@@ -7,7 +7,10 @@ interface CopyButtonProps {
   ariaLabel?: string;
 }
 
-export function CopyButton({ text, ariaLabel = "Copy to clipboard" }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  ariaLabel = "Copy to clipboard",
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,7 +51,11 @@ export function CopyButton({ text, ariaLabel = "Copy to clipboard" }: CopyButton
         className="h-4 w-4"
       >
         {copied ? (
-          <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m5 13 4 4L19 7"
+          />
         ) : (
           <>
             <rect width="10" height="12" x="9" y="7" rx="2" />

@@ -92,7 +92,11 @@ async function readErrorMessage(response: Response) {
     return `Request failed (${response.status}).`;
   }
   try {
-    const data = JSON.parse(text) as { message?: string; error?: string; details?: string };
+    const data = JSON.parse(text) as {
+      message?: string;
+      error?: string;
+      details?: string;
+    };
     if (data.message) {
       return data.message;
     }
@@ -205,10 +209,13 @@ export default function HomePage() {
   const [testBusy, setTestBusy] = useState(false);
   const [testError, setTestError] = useState<string | null>(null);
   const [testResultUrl, setTestResultUrl] = useState<string | null>(null);
-  const [testResultMeta, setTestResultMeta] = useState<TestResultMeta | null>(null);
+  const [testResultMeta, setTestResultMeta] = useState<TestResultMeta | null>(
+    null,
+  );
   const testPanelRef = useRef<HTMLDivElement | null>(null);
 
-  const pdfApiBaseUrl = process.env.NEXT_PUBLIC_PDF_API_BASE_URL || "http://localhost:8087";
+  const pdfApiBaseUrl =
+    process.env.NEXT_PUBLIC_PDF_API_BASE_URL || "http://localhost:8087";
 
   useEffect(() => {
     let cancelled = false;
@@ -230,9 +237,12 @@ export default function HomePage() {
       }
 
       try {
-        const statusResponse = await fetch(`${pdfApiBaseUrl}/self-hosted/status`);
+        const statusResponse = await fetch(
+          `${pdfApiBaseUrl}/self-hosted/status`,
+        );
         if (statusResponse.ok) {
-          const status = (await statusResponse.json()) as SelfHostedStatusResponse;
+          const status =
+            (await statusResponse.json()) as SelfHostedStatusResponse;
           if (!cancelled) {
             setIsConfigured(status.isConfigured);
             setAdminUsername(status.username ?? null);
@@ -317,7 +327,9 @@ export default function HomePage() {
         }
         const data = (await response.json()) as ApiKeyApiResponse[];
         const hydrated: ApiKeyRecord[] = data.map((key) => {
-          const status: ApiKeyRecord["status"] = key.isActive ? "active" : "revoked";
+          const status: ApiKeyRecord["status"] = key.isActive
+            ? "active"
+            : "revoked";
           return {
             id: key.id,
             name: key.name,
@@ -334,7 +346,9 @@ export default function HomePage() {
       } catch (error) {
         if (!cancelled) {
           setKeyError(
-            error instanceof Error ? error.message : "Unable to load API keys from the server."
+            error instanceof Error
+              ? error.message
+              : "Unable to load API keys from the server.",
           );
         }
       }
@@ -352,7 +366,10 @@ export default function HomePage() {
   }, [logs]);
 
   useEffect(() => {
-    if (apiKeys.length > 0 && !apiKeys.some((key) => key.id === selectedKeyId)) {
+    if (
+      apiKeys.length > 0 &&
+      !apiKeys.some((key) => key.id === selectedKeyId)
+    ) {
       setSelectedKeyId(apiKeys[0].id);
     }
   }, [apiKeys, selectedKeyId]);
@@ -365,7 +382,9 @@ export default function HomePage() {
     };
   }, [testResultUrl]);
 
-  const selectedKey = selectedKeyId ? apiKeys.find((key) => key.id === selectedKeyId) : undefined;
+  const selectedKey = selectedKeyId
+    ? apiKeys.find((key) => key.id === selectedKeyId)
+    : undefined;
   const curlSnippet = selectedKey?.value
     ? `curl -X POST ${pdfApiBaseUrl}/v1/generate \\
   -H "Authorization: Bearer ${selectedKey.value}" \\
@@ -399,17 +418,21 @@ export default function HomePage() {
         <Header />
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">First run setup</p>
+            <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">
+              First run setup
+            </p>
             <h1 className="text-4xl font-semibold text-white">
               Create the single admin account for your self-hosted dashboard.
             </h1>
             <p className="text-slate-300">
-              Credentials are stored in the database for this instance. Once it is created, the
-              setup page is disabled and you will be logged in automatically.
+              Credentials are stored in the database for this instance. Once it
+              is created, the setup page is disabled and you will be logged in
+              automatically.
             </p>
             <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-6">
               <p className="text-sm text-slate-300">
-                To reset the admin account, remove the database volume and restart the stack.
+                To reset the admin account, remove the database volume and
+                restart the stack.
               </p>
             </div>
           </div>
@@ -434,17 +457,20 @@ export default function HomePage() {
               }
               setAuthBusy(true);
               try {
-                const response = await fetch(`${pdfApiBaseUrl}/self-hosted/setup`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
+                const response = await fetch(
+                  `${pdfApiBaseUrl}/self-hosted/setup`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                      username: setupForm.username.trim(),
+                      password: setupForm.password,
+                    }),
                   },
-                  credentials: "include",
-                  body: JSON.stringify({
-                    username: setupForm.username.trim(),
-                    password: setupForm.password,
-                  }),
-                });
+                );
 
                 if (!response.ok) {
                   const message = await readErrorMessage(response);
@@ -458,7 +484,9 @@ export default function HomePage() {
                 setSetupForm({ username: "", password: "", confirm: "" });
               } catch (error) {
                 setSetupError(
-                  error instanceof Error ? error.message : "Unable to create the admin account."
+                  error instanceof Error
+                    ? error.message
+                    : "Unable to create the admin account.",
                 );
               } finally {
                 setAuthBusy(false);
@@ -467,27 +495,37 @@ export default function HomePage() {
             className="space-y-6 rounded-3xl border border-white/10 bg-slate-950/70 p-8 shadow-lg"
           >
             <div>
-              <h2 className="text-xl font-semibold text-white">Admin credentials</h2>
-              <p className="text-sm text-slate-400">These details are stored in your self-hosted database.</p>
+              <h2 className="text-xl font-semibold text-white">
+                Admin credentials
+              </h2>
+              <p className="text-sm text-slate-400">
+                These details are stored in your self-hosted database.
+              </p>
             </div>
             <Field
               label="Username"
               value={setupForm.username}
-              onChange={(value) => setSetupForm((prev) => ({ ...prev, username: value }))}
+              onChange={(value) =>
+                setSetupForm((prev) => ({ ...prev, username: value }))
+              }
               placeholder="admin"
             />
             <Field
               label="Password"
               type="password"
               value={setupForm.password}
-              onChange={(value) => setSetupForm((prev) => ({ ...prev, password: value }))}
+              onChange={(value) =>
+                setSetupForm((prev) => ({ ...prev, password: value }))
+              }
               placeholder="Create a strong password"
             />
             <Field
               label="Confirm password"
               type="password"
               value={setupForm.confirm}
-              onChange={(value) => setSetupForm((prev) => ({ ...prev, confirm: value }))}
+              onChange={(value) =>
+                setSetupForm((prev) => ({ ...prev, confirm: value }))
+              }
               placeholder="Repeat password"
             />
             {setupError ? (
@@ -514,11 +552,16 @@ export default function HomePage() {
         <Header />
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">Welcome back</p>
-            <h1 className="text-4xl font-semibold text-white">Log in to manage your self-hosted PaperAPI instance.</h1>
+            <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">
+              Welcome back
+            </p>
+            <h1 className="text-4xl font-semibold text-white">
+              Log in to manage your self-hosted PaperAPI instance.
+            </h1>
             <p className="text-slate-300">
-              This console never leaves your network. It keeps API keys, usage snapshots, and
-              rendering activity in sync with your self-hosted instance.
+              This console never leaves your network. It keeps API keys, usage
+              snapshots, and rendering activity in sync with your self-hosted
+              instance.
             </p>
             <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-6">
               <p className="text-sm text-slate-300">
@@ -539,17 +582,20 @@ export default function HomePage() {
               }
               setAuthBusy(true);
               try {
-                const response = await fetch(`${pdfApiBaseUrl}/self-hosted/login`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
+                const response = await fetch(
+                  `${pdfApiBaseUrl}/self-hosted/login`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                      username: loginForm.username.trim(),
+                      password: loginForm.password,
+                    }),
                   },
-                  credentials: "include",
-                  body: JSON.stringify({
-                    username: loginForm.username.trim(),
-                    password: loginForm.password,
-                  }),
-                });
+                );
 
                 if (!response.ok) {
                   const message = await readErrorMessage(response);
@@ -563,7 +609,9 @@ export default function HomePage() {
                 setLoginForm({ username: "", password: "" });
               } catch (error) {
                 setLoginError(
-                  error instanceof Error ? error.message : "Unable to log in with those credentials."
+                  error instanceof Error
+                    ? error.message
+                    : "Unable to log in with those credentials.",
                 );
               } finally {
                 setAuthBusy(false);
@@ -573,19 +621,25 @@ export default function HomePage() {
           >
             <div>
               <h2 className="text-xl font-semibold text-white">Admin login</h2>
-              <p className="text-sm text-slate-400">No additional users are supported yet.</p>
+              <p className="text-sm text-slate-400">
+                No additional users are supported yet.
+              </p>
             </div>
             <Field
               label="Username"
               value={loginForm.username}
-              onChange={(value) => setLoginForm((prev) => ({ ...prev, username: value }))}
+              onChange={(value) =>
+                setLoginForm((prev) => ({ ...prev, username: value }))
+              }
               placeholder="admin"
             />
             <Field
               label="Password"
               type="password"
               value={loginForm.password}
-              onChange={(value) => setLoginForm((prev) => ({ ...prev, password: value }))}
+              onChange={(value) =>
+                setLoginForm((prev) => ({ ...prev, password: value }))
+              }
               placeholder="Your password"
             />
             {loginError ? (
@@ -610,9 +664,16 @@ export default function HomePage() {
     <main className="mx-auto max-w-6xl px-6 pb-16 pt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">Self-hosted dashboard</p>
-          <h1 className="text-3xl font-semibold text-white">PaperAPI Control Room</h1>
-          <p className="text-sm text-slate-400">Your self-hosted instance. No plans, no billing, just your infrastructure.</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">
+            Self-hosted dashboard
+          </p>
+          <h1 className="text-3xl font-semibold text-white">
+            PaperAPI Control Room
+          </h1>
+          <p className="text-sm text-slate-400">
+            Your self-hosted instance. No plans, no billing, just your
+            infrastructure.
+          </p>
         </div>
         <button
           type="button"
@@ -633,9 +694,21 @@ export default function HomePage() {
       </div>
 
       <section className="mt-10 grid gap-6 md:grid-cols-3">
-        <StatCard title="PDF renders" value={usageStats.renders.toString()} helper="Last 24h activity" />
-        <StatCard title="Active API keys" value={usageStats.keys.toString()} helper="Manage below" />
-        <StatCard title="Alerts" value={usageStats.alerts.toString()} helper="Warnings or failures" />
+        <StatCard
+          title="PDF renders"
+          value={usageStats.renders.toString()}
+          helper="Last 24h activity"
+        />
+        <StatCard
+          title="Active API keys"
+          value={usageStats.keys.toString()}
+          helper="Manage below"
+        />
+        <StatCard
+          title="Alerts"
+          value={usageStats.alerts.toString()}
+          helper="Warnings or failures"
+        />
       </section>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
@@ -643,7 +716,9 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold text-white">API keys</h2>
-              <p className="text-sm text-slate-400">Keys used by your PDF API and workers.</p>
+              <p className="text-sm text-slate-400">
+                Keys used by your PDF API and workers.
+              </p>
             </div>
             <form
               onSubmit={async (event) => {
@@ -654,16 +729,19 @@ export default function HomePage() {
                 setKeyError(null);
                 setKeyBusy(true);
                 try {
-                  const response = await fetch(`${pdfApiBaseUrl}/self-hosted/api-keys`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
+                  const response = await fetch(
+                    `${pdfApiBaseUrl}/self-hosted/api-keys`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      credentials: "include",
+                      body: JSON.stringify({
+                        name: newKeyName.trim(),
+                      }),
                     },
-                    credentials: "include",
-                    body: JSON.stringify({
-                      name: newKeyName.trim(),
-                    }),
-                  });
+                  );
 
                   if (!response.ok) {
                     const message = await readErrorMessage(response);
@@ -671,7 +749,9 @@ export default function HomePage() {
                   }
 
                   const data = (await response.json()) as CreateKeyResponse;
-                  const status: ApiKeyRecord["status"] = data.key.isActive ? "active" : "revoked";
+                  const status: ApiKeyRecord["status"] = data.key.isActive
+                    ? "active"
+                    : "revoked";
                   const record: ApiKeyRecord = {
                     id: data.key.id,
                     name: data.key.name,
@@ -682,12 +762,17 @@ export default function HomePage() {
                     status,
                   };
 
-                  setKeyVault((prev) => ({ ...prev, [record.id]: data.plaintextKey }));
+                  setKeyVault((prev) => ({
+                    ...prev,
+                    [record.id]: data.plaintextKey,
+                  }));
                   setApiKeys((prev) => [record, ...prev]);
                   setNewKeyName("");
                 } catch (error) {
                   setKeyError(
-                    error instanceof Error ? error.message : "Unable to create an API key."
+                    error instanceof Error
+                      ? error.message
+                      : "Unable to create an API key.",
                   );
                 } finally {
                   setKeyBusy(false);
@@ -727,8 +812,12 @@ export default function HomePage() {
                   className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-white">{key.name}</p>
-                    <p className="text-xs text-slate-400">Created {formatDate(key.createdAt)}</p>
+                    <p className="text-sm font-semibold text-white">
+                      {key.name}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      Created {formatDate(key.createdAt)}
+                    </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
@@ -738,7 +827,10 @@ export default function HomePage() {
                       type="button"
                       onClick={() => {
                         setSelectedKeyId(key.id);
-                        testPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        testPanelRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
                       }}
                       className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-200 transition hover:border-cyan-200/60"
                     >
@@ -761,7 +853,11 @@ export default function HomePage() {
                       }}
                       className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-200 transition hover:border-cyan-200/60 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {key.value ? (copiedKey === key.id ? "Copied" : "Copy") : "Missing"}
+                      {key.value
+                        ? copiedKey === key.id
+                          ? "Copied"
+                          : "Copy"
+                        : "Missing"}
                     </button>
                     <button
                       type="button"
@@ -772,12 +868,14 @@ export default function HomePage() {
                         }
                         setKeyError(null);
                         setKeyBusy(true);
-                        const nextStatus = key.status === "active" ? "revoked" : "active";
-                        const action = nextStatus === "revoked" ? "revoke" : "restore";
+                        const nextStatus =
+                          key.status === "active" ? "revoked" : "active";
+                        const action =
+                          nextStatus === "revoked" ? "revoke" : "restore";
                         try {
                           const response = await fetch(
                             `${pdfApiBaseUrl}/self-hosted/api-keys/${key.id}/${action}`,
-                            { method: "POST", credentials: "include" }
+                            { method: "POST", credentials: "include" },
                           );
                           if (!response.ok) {
                             const message = await readErrorMessage(response);
@@ -785,12 +883,16 @@ export default function HomePage() {
                           }
                           setApiKeys((prev) =>
                             prev.map((item) =>
-                              item.id === key.id ? { ...item, status: nextStatus } : item
-                            )
+                              item.id === key.id
+                                ? { ...item, status: nextStatus }
+                                : item,
+                            ),
                           );
                         } catch (error) {
                           setKeyError(
-                            error instanceof Error ? error.message : "Unable to update API key."
+                            error instanceof Error
+                              ? error.message
+                              : "Unable to update API key.",
                           );
                         } finally {
                           setKeyBusy(false);
@@ -814,19 +916,27 @@ export default function HomePage() {
         <div className="space-y-6">
           <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-6">
             <h2 className="text-lg font-semibold text-white">Quick actions</h2>
-            <p className="mt-2 text-sm text-slate-400">Set the PDF API base URL for internal services.</p>
+            <p className="mt-2 text-sm text-slate-400">
+              Set the PDF API base URL for internal services.
+            </p>
             <div className="mt-4 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-xs text-slate-200">
-              {process.env.NEXT_PUBLIC_PDF_API_BASE_URL || "http://localhost:8086"}
+              {process.env.NEXT_PUBLIC_PDF_API_BASE_URL ||
+                "http://localhost:8086"}
             </div>
             <div className="mt-4 space-y-2 text-sm text-slate-400">
               <p>- Database is local-only. Keep your backups in sync.</p>
               <p>- No subscriptions: all usage is treated as free-tier.</p>
-              <p>- Plaintext keys are stored locally; the server stores only hashes.</p>
+              <p>
+                - Plaintext keys are stored locally; the server stores only
+                hashes.
+              </p>
             </div>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-6">
-            <h2 className="text-lg font-semibold text-white">Instance health</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Instance health
+            </h2>
             <div className="mt-4 space-y-3 text-sm">
               <HealthRow label="PDF API" status="Healthy" />
               <HealthRow label="Worker queue" status="Warmed" />
@@ -836,14 +946,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section ref={testPanelRef} className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <section
+        ref={testPanelRef}
+        className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]"
+      >
         <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold text-white">Test a key</h2>
-              <p className="text-sm text-slate-400">Send a live request and download the generated PDF.</p>
+              <p className="text-sm text-slate-400">
+                Send a live request and download the generated PDF.
+              </p>
               <p className="text-xs text-slate-500">
-                Plaintext keys are stored in your browser for copy; the server stores only hashes.
+                Plaintext keys are stored in your browser for copy; the server
+                stores only hashes.
               </p>
             </div>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
@@ -909,7 +1025,7 @@ export default function HomePage() {
                 }
                 if (!selectedKey.value) {
                   setTestError(
-                    "This key does not have a stored plaintext value. Create a new key to test."
+                    "This key does not have a stored plaintext value. Create a new key to test.",
                   );
                   return;
                 }
@@ -925,11 +1041,16 @@ export default function HomePage() {
                 const trimmedOptions = testOptions.trim();
                 if (trimmedOptions) {
                   try {
-                    parsedOptions = JSON.parse(trimmedOptions) as Record<string, unknown>;
+                    parsedOptions = JSON.parse(trimmedOptions) as Record<
+                      string,
+                      unknown
+                    >;
                   } catch (error) {
                     setTestBusy(false);
                     setTestError(
-                      error instanceof Error ? error.message : "Options JSON is invalid."
+                      error instanceof Error
+                        ? error.message
+                        : "Options JSON is invalid.",
                     );
                     return;
                   }
@@ -952,7 +1073,10 @@ export default function HomePage() {
                     const text = await response.text();
                     let message = text;
                     try {
-                      const json = JSON.parse(text) as { message?: string; error?: string };
+                      const json = JSON.parse(text) as {
+                        message?: string;
+                        error?: string;
+                      };
                       if (json.message) {
                         message = json.message;
                       } else if (json.error) {
@@ -961,7 +1085,9 @@ export default function HomePage() {
                     } catch {
                       // Keep raw text
                     }
-                    setTestError(`Request failed (${response.status}). ${message}`);
+                    setTestError(
+                      `Request failed (${response.status}). ${message}`,
+                    );
                     setTestResultMeta({
                       status: response.status,
                       statusText: response.statusText,
@@ -979,11 +1105,14 @@ export default function HomePage() {
                     status: response.status,
                     statusText: response.statusText,
                     size: blob.size,
-                    contentType: blob.type || response.headers.get("content-type"),
+                    contentType:
+                      blob.type || response.headers.get("content-type"),
                     receivedAt: new Date().toISOString(),
                   });
                 } catch (error) {
-                  setTestError(error instanceof Error ? error.message : "Request failed.");
+                  setTestError(
+                    error instanceof Error ? error.message : "Request failed.",
+                  );
                 } finally {
                   setTestBusy(false);
                 }
@@ -1006,8 +1135,12 @@ export default function HomePage() {
 
         <div className="space-y-6">
           <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-6">
-            <h3 className="text-lg font-semibold text-white">Request preview</h3>
-            <p className="mt-2 text-sm text-slate-400">Use this to reproduce the request in a terminal.</p>
+            <h3 className="text-lg font-semibold text-white">
+              Request preview
+            </h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Use this to reproduce the request in a terminal.
+            </p>
             <pre className="mt-4 whitespace-pre-wrap rounded-2xl border border-white/10 bg-slate-900/70 p-4 text-xs text-slate-200">
               {curlSnippet}
             </pre>
@@ -1017,16 +1150,25 @@ export default function HomePage() {
             {testResultMeta ? (
               <div className="mt-3 space-y-2 text-sm text-slate-300">
                 <p>Status: {testResultMeta.status}</p>
-                <p>Content-Type: {testResultMeta.contentType || "application/pdf"}</p>
+                <p>
+                  Content-Type:{" "}
+                  {testResultMeta.contentType || "application/pdf"}
+                </p>
                 <p>Size: {formatBytes(testResultMeta.size)}</p>
                 <p>Received: {formatDate(testResultMeta.receivedAt)}</p>
               </div>
             ) : (
-              <p className="mt-3 text-sm text-slate-400">Send a request to see status and payload size.</p>
+              <p className="mt-3 text-sm text-slate-400">
+                Send a request to see status and payload size.
+              </p>
             )}
             {testResultUrl ? (
               <div className="mt-4 overflow-hidden rounded-2xl border border-white/10">
-                <iframe title="Generated PDF preview" src={testResultUrl} className="h-[360px] w-full" />
+                <iframe
+                  title="Generated PDF preview"
+                  src={testResultUrl}
+                  className="h-[360px] w-full"
+                />
               </div>
             ) : null}
           </div>
@@ -1043,7 +1185,9 @@ export default function HomePage() {
                 className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3"
               >
                 <div>
-                  <p className="text-sm font-semibold text-white">{log.event}</p>
+                  <p className="text-sm font-semibold text-white">
+                    {log.event}
+                  </p>
                   <p className="text-xs text-slate-400">{log.detail}</p>
                 </div>
                 <div className="text-right text-xs text-slate-400">
@@ -1060,15 +1204,15 @@ export default function HomePage() {
             <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
               <p className="text-sm font-semibold text-white">wkhtmltopdf</p>
               <p className="mt-2 text-sm text-slate-400">
-                Confirm binary availability and font packs after upgrades. Use the PDF API health
-                endpoint to validate.
+                Confirm binary availability and font packs after upgrades. Use
+                the PDF API health endpoint to validate.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
               <p className="text-sm font-semibold text-white">Audit trail</p>
               <p className="mt-2 text-sm text-slate-400">
-                All requests are logged on your instance. Export logs regularly if you need long-term
-                retention.
+                All requests are logged on your instance. Export logs regularly
+                if you need long-term retention.
               </p>
             </div>
           </div>
@@ -1086,8 +1230,12 @@ function Header() {
           P
         </div>
         <div>
-          <p className="text-sm uppercase tracking-[0.35em] text-cyan-200/70">PaperAPI</p>
-          <p className="text-lg font-semibold text-white">Self-hosted dashboard</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-cyan-200/70">
+            PaperAPI
+          </p>
+          <p className="text-lg font-semibold text-white">
+            Self-hosted dashboard
+          </p>
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-3">
@@ -1132,10 +1280,20 @@ function Field({
   );
 }
 
-function StatCard({ title, value, helper }: { title: string; value: string; helper: string }) {
+function StatCard({
+  title,
+  value,
+  helper,
+}: {
+  title: string;
+  value: string;
+  helper: string;
+}) {
   return (
     <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-6">
-      <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/70">{title}</p>
+      <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/70">
+        {title}
+      </p>
       <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
       <p className="mt-2 text-sm text-slate-400">{helper}</p>
     </div>
