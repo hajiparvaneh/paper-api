@@ -28,12 +28,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'dashboard/package-lock.json'
 
       - name: Install dependencies
         working-directory: ./dashboard
-        run: npm ci
+        run: npm install --no-fund --no-audit
 
       - name: Run ESLint
         working-directory: ./dashboard
@@ -59,21 +57,21 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        working-directory: ./pdfapi
-        run: dotnet restore
+        working-directory: .
+        run: dotnet restore paper-api.sln
 
       - name: Build
-        working-directory: ./pdfapi
-        run: dotnet build --configuration Release --no-restore
+        working-directory: .
+        run: dotnet build paper-api.sln --configuration Release --no-restore
 
       - name: Run tests
-        working-directory: ./pdfapi
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        working-directory: .
+        run: dotnet test paper-api.sln --configuration Release --no-build --verbosity normal
         continue-on-error: true
 
       - name: Analyze code style with StyleCop
-        working-directory: ./pdfapi
-        run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=false
+        working-directory: .
+        run: dotnet build paper-api.sln --configuration Release --no-restore /p:TreatWarningsAsErrors=false
         continue-on-error: true
 
   security-check:
@@ -92,6 +90,7 @@ jobs:
       - name: Check for vulnerable npm packages
         working-directory: ./dashboard
         run: |
+          npm install --no-fund --no-audit --package-lock-only
           npm audit --audit-level=moderate
         continue-on-error: true
 
