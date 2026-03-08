@@ -210,8 +210,7 @@ cd pdfapi && dotnet test
 
 1. **Create a Pull Request** on GitHub from your fork to the upstream repository
 2. **Fill out the PR template** with relevant information
-3. **Ensure checks pass**:
-   - CI/CD workflows pass
+3. **Ensure checks pass locally**:
    - Code quality checks pass
    - Tests pass
 4. **Respond to feedback** - Be receptive to suggestions and code review
