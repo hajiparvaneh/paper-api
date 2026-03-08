@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Manrope, Space_Grotesk } from "next/font/google";
 
 import "./globals.css";
@@ -34,25 +33,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const googleTagId = "G-7QR22KHT55";
-
   return (
     <html lang="en">
       <body
         className={`${manrope.variable} ${spaceGrotesk.variable} antialiased`}
       >
-        <Script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}
-        />
-        <Script id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${googleTagId}');
-          `}
-        </Script>
         <div className="relative min-h-screen overflow-hidden">
           <div className="pointer-events-none absolute left-[-10%] top-[-20%] h-[520px] w-[520px] rounded-full bg-cyan-300/15 blur-[160px]" />
           <div className="pointer-events-none absolute right-[-10%] top-[5%] h-[460px] w-[460px] rounded-full bg-teal-400/20 blur-[160px]" />
